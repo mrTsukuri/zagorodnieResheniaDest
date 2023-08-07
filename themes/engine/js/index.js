@@ -1,6 +1,5 @@
 import JsTabs from 'js-tabs';
 import MmenuLight from 'mmenu-light';
-import yall from 'yall-js';
 import { Modal, Toast } from './../../../../node_modules/bootstrap/dist/js/bootstrap.esm.min';
 
 
@@ -69,18 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             evnt.preventDefault();
             drawerMenu.open();
         })
-    });   
-    //yall    
-    yall({
-        observeChanges: true,
-        events: {      
-          load: function load(event) {        
-            if (!event.target.classList.contains("lazy") && event.target.nodeName === "IMG") {
-              event.target.classList.add("yall-loaded");
-            }
-          }
-        }
-    });     
+    });       
     //map    
     if(document.querySelector('.map')){
         function mapLoad(){
@@ -143,79 +131,90 @@ document.addEventListener('DOMContentLoaded', function () {
     };    
     window.noty = notice;            
     //Mask
-    function isNumber(val) {
-        return /^[-]?\d+$/.test(val);
-    }          
-    function format(targetInput, e) {        
-        let tel = targetInput.value.replace(/[^0-9]/g, '');            
-        let result = '';
-        let position = getCursorPosition(targetInput);
-        if (tel.length) {
-            if ("1" !== tel[0] && "2" !== tel[0] && "3" !== tel[0] && "4" !== tel[0] && "5" !== tel[0] && "6" !== tel[0] && "9" !== tel[0] || (tel = "7" + tel), "8" === tel[0])
-                result = "7";
-            else {
-                if ("7" !== tel[0])
-                    return;
-                result = tel[0]
-            }
-            result = '+' + result,          
-            result = result + " (" + tel.substring(1, 4),
-            tel.length > 3 && (result = result + ") " + tel.substring(4, 7)),
-            tel.length > 6 && (result = result + " " + tel.substring(7, 9)),
-            tel.length > 9 && (result = result + "-" + tel.substring(9, 11))                           
-        }                                      
-        targetInput.value = result;               
-        if (e.keyCode === 46 || e.keyCode === 8) {                     
-            setCaretPosition(targetInput, position);            
-        }        
-    }
-    function setCaretPosition(elem, caretPos) {
-        let range = void 0;    
-        if (elem.createTextRange) {    
-            range = elem.createTextRange();    
-            range.move('character', caretPos);    
-            range.select();    
-        } else {    
-            elem.focus();    
-            if (elem.selectionStart !== undefined) {    
-                elem.setSelectionRange(caretPos, caretPos);    
-            }    
-        }    
-    }            
-    function getCursorPosition(element) {    
-        let el = element;    
-        let pos = 0;    
-        if ('selectionStart' in el) {    
-            pos = el.selectionStart;    
-        } else if ('selection' in document) {    
-            el.focus();    
-            var Sel = document.selection.createRange();    
-            var SelLength = document.selection.createRange().text.length;    
-            Sel.moveStart('character', -el.value.length);    
-            pos = Sel.text.length - SelLength;    
-        }            
-        return pos;    
-    }    
-    function formatUp(e){
-        format(e.currentTarget, e);                
-        if(isNumber(e.key) || e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39){            
-            format(e.currentTarget, e);
-        }    
-    }   
-    function formatDown(e){                       
-        if(!isNumber(e.key) && e.keyCode !== 8 && e.keyCode !== 46 && e.keyCode !== 37 && e.keyCode !== 39){            
-            e.preventDefault();
-            e.stopPropagation();                      
+    if(document.querySelector('input[type="tel"]')){    
+        function isNumber(val) {
+            return /^[-]?\d+$/.test(val);
+        }          
+        function format(targetInput, e) {        
+            let tel = targetInput.value.replace(/[^0-9]/g, '');            
+            let result = '';
+            let position = getCursorPosition(targetInput);
+            if (tel.length) {
+                if ("1" !== tel[0] && "2" !== tel[0] && "3" !== tel[0] && "4" !== tel[0] && "5" !== tel[0] && "6" !== tel[0] && "9" !== tel[0] || (tel = "7" + tel), "8" === tel[0])
+                    result = "7";
+                else {
+                    if ("7" !== tel[0])
+                        return;
+                    result = tel[0]
+                }
+                result = '+' + result,          
+                result = result + " (" + tel.substring(1, 4),
+                tel.length > 3 && (result = result + ") " + tel.substring(4, 7)),
+                tel.length > 6 && (result = result + " " + tel.substring(7, 9)),
+                tel.length > 9 && (result = result + "-" + tel.substring(9, 11))                           
+            }                                      
+            targetInput.value = result;               
+            if (e.keyCode === 46 || e.keyCode === 8) {                     
+                setCaretPosition(targetInput, position);            
+            }        
         }
-    }
-    function clickInpt(e){        
-        e.currentTarget.value = '+7 ('   
-    }
-    document.querySelectorAll('input[type="tel"]').forEach(input => {               
-        input.addEventListener('keydown', formatDown)
-        input.addEventListener('keyup', formatUp)
-        input.addEventListener('click', clickInpt)     
-    })
+        function setCaretPosition(elem, caretPos) {
+            let range = void 0;    
+            if (elem.createTextRange) {    
+                range = elem.createTextRange();    
+                range.move('character', caretPos);    
+                range.select();    
+            } else {    
+                elem.focus();    
+                if (elem.selectionStart !== undefined) {    
+                    elem.setSelectionRange(caretPos, caretPos);    
+                }    
+            }    
+        }            
+        function getCursorPosition(element) {    
+            let el = element;    
+            let pos = 0;    
+            if ('selectionStart' in el) {    
+                pos = el.selectionStart;    
+            } else if ('selection' in document) {    
+                el.focus();    
+                var Sel = document.selection.createRange();    
+                var SelLength = document.selection.createRange().text.length;    
+                Sel.moveStart('character', -el.value.length);    
+                pos = Sel.text.length - SelLength;    
+            }            
+            return pos;    
+        }    
+        function formatUp(e){
+            format(e.currentTarget, e);                
+            if(isNumber(e.key) || e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39){            
+                format(e.currentTarget, e);
+            }    
+        }   
+        function formatDown(e){                       
+            if(!isNumber(e.key) && e.keyCode !== 8 && e.keyCode !== 46 && e.keyCode !== 37 && e.keyCode !== 39){            
+                e.preventDefault();
+                e.stopPropagation();                      
+            }
+        }
+        function clickInpt(e){
+            if(e.currentTarget.value === ''){
+                e.currentTarget.value = '+7 (';
+            }    
+        }
+        document.querySelectorAll('input[type="tel"]').forEach(input => {               
+            input.addEventListener('keydown', formatDown)
+            input.addEventListener('keyup', formatUp)
+            input.addEventListener('click', clickInpt)
+            document.addEventListener('click', function(e){
+                if(e.target !== input && input.value == '+7 ('){
+                    input.value= '';
+                }
+            })     
+        })
+        
+
+    }    
     //скролл до верха
     if(document.querySelector('.scroll-item')){        
         document.addEventListener('scroll', ()=> {                      
