@@ -207,10 +207,14 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             e.stopPropagation();                      
         }
-    }   
+    }
+    function clickInpt(e){        
+        e.currentTarget.value = '+7 ('   
+    }
     document.querySelectorAll('input[type="tel"]').forEach(input => {               
         input.addEventListener('keydown', formatDown)
-        input.addEventListener('keyup', formatUp)      
+        input.addEventListener('keyup', formatUp)
+        input.addEventListener('click', clickInpt)     
     })
     //скролл до верха
     if(document.querySelector('.scroll-item')){        
